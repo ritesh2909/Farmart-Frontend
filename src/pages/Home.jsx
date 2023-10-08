@@ -16,7 +16,7 @@ function Home() {
     if (!file) return;
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/upload/upload",
+        "https://attractive-worm-hosiery.cyclic.app/api/upload/upload",
         { image: file[0] },
         {
           headers: {
@@ -47,7 +47,7 @@ function Home() {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/upload/uploads`,
+        `https://attractive-worm-hosiery.cyclic.app/api/upload/uploads`,
         {
           headers: headers,
         }
@@ -84,7 +84,7 @@ function Home() {
   const handleDelete = async (uploadId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:3000/api/upload/remove/${uploadId}`,
+        `https://attractive-worm-hosiery.cyclic.app/api/upload/remove/${uploadId}`,
         { headers: headers }
       );
       if (res.status == 204) {
@@ -98,7 +98,7 @@ function Home() {
   const handleLogout = async (e) => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/auth/logout",
+        "https://attractive-worm-hosiery.cyclic.app/api/auth/logout",
         {},
         {
           headers: headers,
