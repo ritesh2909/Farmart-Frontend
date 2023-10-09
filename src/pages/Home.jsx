@@ -7,13 +7,17 @@ function Home() {
   const [uploads, setUploads] = useState([]);
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
-
+  const [btnLoading, setBtnLoading] = useState(false);
   const handleFileChange = (e) => {
     setFile(e.target.files);
   };
 
   const handleUpload = async () => {
-    if (!file) return;
+    setBtnLoading(true);
+    if (!file) {
+      setBtnLoading(false);
+      return;
+    }
     try {
       const res = await axios.post(
         "https://attractive-worm-hosiery.cyclic.app/api/upload/upload",
@@ -25,7 +29,8 @@ function Home() {
           },
         }
       );
-      fetchUploads();
+
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -124,29 +129,46 @@ function Home() {
       }}
     >
       <div>
-        <h1>Uploads</h1>
+        <h1>My Uploads</h1>
         <ol>
           {uploads.map((upload) => (
-            <li key={upload.id} style={{ textDecoration: "none" }}>
+            <li
+              key={upload.id}
+              style={{ textDecoration: "none", marginTop: "20px" }}
+            >
               <a href={`${upload.secretUrl}`} target="_n">
                 {upload.secretUrl}
               </a>
-              <button onClick={() => handleDownload(upload.secretUrl)}>
+              <button
+                onClick={() => handleDownload(upload.secretUrl)}
+                className="btn btn-primary"
+                style={{ marginLeft: "20px" }}
+              >
                 Download
               </button>
-              <button onClick={() => handleDelete(upload._id)}>Delete</button>
+              <button
+                onClick={() => handleDelete(upload._id)}
+                className="btn btn-danger"
+                style={{ marginLeft: "20px" }}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ol>
         {loading && <p>Loading...</p>}
       </div>
       <div className="rightCorner">
-        <button onClick={handleLogout}>Logout</button>
+        <button onClick={handleLogout} className="btn btn-danger">
+          Logout
+        </button>
 
         <button
           type="button"
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
+          className="btn btn-primary"
+          style={{ marginLeft: "20px" }}
         >
           New Upload
         </button>
@@ -185,17 +207,23 @@ function Home() {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-danger"
                   data-bs-dismiss="modal"
                 >
                   Close
                 </button>
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className="btn btn-success"
                   onClick={handleUpload}
                 >
-                  Save changes
+                  {btnLoading ? (
+                    <div class="spinner-border" role="status">
+                      <span class="sr-only"></span>
+                    </div>
+                  ) : (
+                    "Save changes"
+                  )}
                 </button>
               </div>
             </div>
